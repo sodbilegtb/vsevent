@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Tech Conference 2025",
+    "description": "Annual tech conference with latest trends.",
+    "category": "Technology",
+    "date": "2025-10-14",
+    "location": "Online"
+  },
+  {
+    "title": "Sing",
+    "description": "Summer Open-mic show ",
+    "category": "Entertainment ",
+    "date": "2025-06-24",
+    "location": "Berlin, Germany"
+  },
+  {
+    "title": "3x3 Berlin Cup",
+    "description": "Basketball 3x3 Tournament in Berlin 2025",
+    "category": "Sport",
+    "date": "2025-06-29",
+    "location": "Berlin, Germany"
+  }
+]

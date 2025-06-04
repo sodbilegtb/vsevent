@@ -1,0 +1,51 @@
+/* app/globals.css */
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  color: #333;
+}
+
+/* Add other global styles or component-specific styles */
+input, textarea, button {
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: block; /* Makes inputs take full width by default */
+  width: calc(100% - 1rem); /* Adjust width considering padding */
+  max-width: 400px; /* Optional: limit max width */
+}
+textarea {
+  min-height: 80px;
+}
+button {
+  background-color: #0070f3;
+  color: white;
+  cursor: pointer;
+  width: auto; /* Override block for buttons if needed */
+}
+button:hover {
+  background-color: #005bb5;
+}
+a {
+  color: #0070f3;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  border: 1px solid #eee;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+}
+h1 {
+  margin-top: 0;
+}
