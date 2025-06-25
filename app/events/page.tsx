@@ -1,39 +1,43 @@
 // app/events/page.tsx
 import Link from 'next/link';
-import { loadEvents, Event } from '@/lib/data';
-import { deleteEventAction } from '@/app/_actions/eventActions'; // Correct path to actions
+import { loadEvents } from '@/app/lib/data';
 
 export default async function EventsPage() {
-  const events = loadEvents();
+  const events = await loadEvents();
 
   return (
-    <div>
-      <h1>Upcoming Events</h1>
-      {events.length === 0 ? (
-        <p>No events scheduled. <Link href="/events/create">Create one!</Link></p>
-      ) : (
-        <ul>
-          {events.map((event, index) => (
-            <li key={index}> {/* Using index as key is okay if list isn't reordered, but unique ID is better */}
-              <strong>{event.title}</strong> - {event.category} ({event.date}) at {event.location}
-              <p>{event.description}</p>
-              <div style={{ marginTop: '0.5rem' }}>
-                {/* Server Action for delete */}
-                <form action={deleteEventAction.bind(null, index)} style={{ display: 'inline', marginRight: '0.5rem' }}>
-                  <button type="submit">Delete</button>
-                </form>
-                <Link href={`/events/${index}/edit`}>
-                  Edit
-                </Link>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-      <br />
-      <Link href="/events/create">
-        <button>Create New Event</button>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">All Events</h1>
+
+      <Link href="/events/new" className="text-blue-500 underline">
+        Create Event
       </Link>
+
+      <ul className="mt-6 space-y-4">
+        {events.map((event: any, index: number) => (
+          <li key={event._id} className="border p-4 rounded">
+            <h2 className="text-xl font-semibold">{event.title}</h2>
+            <p>{event.description}</p>
+
+            <div className="mt-2 flex gap-4">
+              <Link
+                href={`/events/${event._id}`}
+                className="text-sm text-blue-600 underline"
+              >
+                View
+              </Link>
+
+
+              <Link
+                href={`/events/${event._id}/edit`}
+                className="text-sm text-green-600 underline"
+              >
+                Edit
+              </Link>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -27,7 +27,7 @@ export default function RootLayout({
       <body>
         <nav style={{ padding: '1rem', backgroundColor: '#f0f0f0', marginBottom: '1rem' }}>
           <a href="/events" style={{ marginRight: '1rem' }}>Events</a>
-          <a href="/events/create">Create Event</a>
+          <a href="/events/new">Create Event</a>
         </nav>
         <main style={{ padding: '1rem' }}>
           {children}

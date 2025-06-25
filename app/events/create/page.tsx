@@ -1,19 +1,17 @@
-// app/events/create/page.tsx
-import { createEventAction } from '@/app/_actions/eventActions';
+// app/events/new/page.tsx
+import { createEvent } from '@/app/_actions/eventActions';
 
-export default function CreateEventPage() {
+export default function NewEventPage() {
   return (
-    <div>
-      <h1>Create a New Event</h1>
-      {/* @ts-ignore */}
-      <form action={createEventAction}>
-        <input type="text" name="title" placeholder="Title" required /><br />
-        <textarea name="description" placeholder="Description"></textarea><br />
-        <input type="text" name="category" placeholder="Category" /><br />
-        <input type="date" name="date" required /><br />
-        <input type="text" name="location" placeholder="Location" /><br />
-        <button type="submit">Create Event</button>
-      </form>
-    </div>
+    <form action={createEvent} className="p-4 space-y-4">
+      <input name="title" placeholder="Title" required className="border p-2 w-full" />
+      <textarea name="description" placeholder="Description" className="border p-2 w-full" />
+      <input name="category" placeholder="Category" className="border p-2 w-full" />
+      <input type="date" name="date" required className="border p-2 w-full" />
+      <input name="location" placeholder="Location" className="border p-2 w-full" />
+      <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded">
+        Create Event
+      </button>
+    </form>
   );
 }

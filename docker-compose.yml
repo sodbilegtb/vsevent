@@ -1,11 +1,28 @@
 version: "3.9"
+
 services:
   nextjs:
-    build: .
+    build:
+      context: .
+      target: dev
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=development
+      - MONGODB_URI=mongodb+srv://vseventuser:Tornadosun11@vsevent-cluster.bynrpuv.mongodb.net/vsevent?retryWrites=true&w=majority&appName=vsevent-cluster
     volumes:
       - .:/app
       - /app/node_modules
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:7
+    container_name: vsevent-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
