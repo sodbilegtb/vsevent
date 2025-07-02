@@ -1,7 +1,8 @@
+
+import mongoose from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/lib/db';
 import Event from '@/models/Event';
-import mongoose from 'mongoose';
 
 export async function DELETE(
   _request: NextRequest,
@@ -9,21 +10,20 @@ export async function DELETE(
 ) {
   await connectToDatabase();
 
+  const id = params.id.trim();
+  console.log('🔍 Requested DELETE for ID:', id);
+  console.log('Is valid ObjectId:', mongoose.Types.ObjectId.isValid(id));
+  console.log('Params:', params);
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
+  }
+
   try {
-    console.log('🔍 Requested DELETE for ID:', params.id);
-
-    const allEvents = await Event.find();
-    console.log('📦 Aktuelle Event-IDs:', allEvents.map(e => e._id.toString()));
-
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
-      console.log('❌ Ungültige ObjectId:', params.id);
-      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
-    }
-
-    const deletedEvent = await Event.findByIdAndDelete(new mongoose.Types.ObjectId(params.id));
+    const deletedEvent = await Event.findByIdAndDelete(id);
 
     if (!deletedEvent) {
-      console.log('❌ Event not found with ID:', params.id);
+      console.log('❌ Event not found with ID:', id);
       return NextResponse.json({ error: 'Event not found' }, { status: 404 });
     }
 
@@ -32,7 +32,6 @@ export async function DELETE(
 
   } catch (error) {
     console.error('🔥 Fehler beim Löschen:', error);
-    return NextResponse.json({ error: 'Failed to delete event' }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed to delete event' }, { status: 500 });
   }
 }
-
