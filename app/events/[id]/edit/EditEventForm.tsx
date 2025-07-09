@@ -1,21 +1,27 @@
-// app/events/new/page.tsx
+// app/events/[id]/edit/EditEventForm.tsx
 'use client';
 
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useState, useTransition } from 'react';
+import { IEvent } from '@/app/lib/definitions';
 
-export default function NewEventPage() {
+interface EditEventFormProps {
+  initialEvent: IEvent; // Event data passed from the Server Component
+}
+
+export default function EditEventForm({ initialEvent }: EditEventFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  // State for form fields
+  // State for form fields, initialized from initialEvent data
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    category: '',
-    date: '',
-    location: '',
+    title: initialEvent.title,
+    description: initialEvent.description || '',
+    category: initialEvent.category || '',
+    date: initialEvent.date.split('T')[0], // Format date for input type="date"
+    location: initialEvent.location || '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -28,35 +34,34 @@ export default function NewEventPage() {
 
     startTransition(async () => {
       try {
-        const res = await fetch('/api/events', {
-          method: 'POST',
+        const res = await fetch(`/api/events/${initialEvent._id}`, {
+          method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         });
 
         if (res.ok) {
-          router.push('/events');
-          router.refresh(); // Revalidate the events list
+          router.push(`/events/${initialEvent._id}`);
+          router.refresh(); // Revalidate the detail page
         } else {
           const errorData = await res.json();
-          // Display validation errors or a general error
           if (errorData.errors) {
             const fieldErrors = Object.values(errorData.errors).flat().join(', ');
             setError(`Validation failed: ${fieldErrors}`);
           } else {
-            setError(errorData.error || 'Failed to create event.');
+            setError(errorData.error || 'Failed to update event.');
           }
         }
       } catch (err) {
-        console.error('Client-side create error:', err);
-        setError('An unexpected error occurred during event creation.');
+        console.error('Client-side update error:', err);
+        setError('An unexpected error occurred during event update.');
       }
     });
   }
 
   return (
     <div className="p-4 md:p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Create New Event</h1>
+      <h1 className="text-2xl font-bold mb-4">Edit "{initialEvent.title}"</h1>
       <form onSubmit={handleSubmit} className="p-4 space-y-4 bg-white rounded-lg shadow">
         
         {/* Title Input */}
@@ -131,13 +136,19 @@ export default function NewEventPage() {
         {error && <p className="text-red-500 text-sm">{error}</p>}
 
         {/* Action Buttons */}
-        <div className="flex justify-end pt-4">
+        <div className="flex justify-end gap-4 pt-4">
+          <Link 
+            href={`/events/${initialEvent._id}`} 
+            className="px-4 py-2 rounded text-gray-700 bg-gray-200 hover:bg-gray-300"
+          >
+            Cancel
+          </Link>
           <button 
             type="submit" 
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 disabled:bg-gray-400"
+            className="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700 disabled:bg-gray-400"
             disabled={isPending}
           >
-            {isPending ? 'Creating...' : 'Create Event'}
+            {isPending ? 'Updating...' : 'Update Event'}
           </button>
         </div>
       </form>
