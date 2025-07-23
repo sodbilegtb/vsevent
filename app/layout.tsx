@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+// Note: The correct font import is 'next/font/google' for the font functions,
+// but since you are using a custom font setup (Geist), your original imports are likely correct for your setup.
+// I will keep your font setup as is.
+import { Geist } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,13 +21,15 @@ export const metadata: Metadata = {
   description: 'Manage your events seamlessly',
 };
 
+// Corrected RootLayout: It only needs to accept `children`.
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // It's good practice to include the font variables in the className of the html or body tag
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
         <nav style={{ padding: '1rem', backgroundColor: '#f0f0f0', marginBottom: '1rem' }}>
           <a href="/events" style={{ marginRight: '1rem' }}>Events</a>
