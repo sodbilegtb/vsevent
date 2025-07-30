@@ -4,11 +4,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",  
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.mjs"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.mjs",
+    "test:system": "node --experimental-vm-modules node_modules/jest/bin/jest.js __tests__/system --config jest.config.mjs"
   },
   "dependencies": {
     "mongoose": "^8.16.0",
@@ -27,6 +28,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
     "jest": "^30.0.5",
+    "mongodb-memory-server": "^9.5.0",
     "tailwindcss": "^4",
     "ts-jest": "^29.4.0",
     "typescript": "^5"
